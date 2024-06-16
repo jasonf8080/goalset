@@ -46,27 +46,35 @@ const login = async(req, res) => {
         throw new Error('Please provide all values')
     }
 
-    //Check if email exists
-    const user = await User.findOne({email}).select('+password');
-    if(!user){
-        throw new Error('User not found with this email address')
+    const userEmail = await User.findOne({email});
+    if(!userEmail){
+        throw new Error('User does not exist')
     }
 
+    const user = await User.findOne({email}).select('+password');
+     if(!user){
+         throw new Error('User auth failed')
+     }
+
+
+ 
     //Passwords Match,
      const passwordsMatch = await user.comparePasswords(password)
      if(!passwordsMatch){
         throw new Error('Password is incorrect!')
      }
 
+
+
      const token = await user.createJWT();
      attachCookie({res, token});
 
-     res.status(StatusCodes.OK).json({message: 'Login Successful!, Redirecting...'})
+     res.status(StatusCodes.OK).json({message: 'Login Successful!  Redirecting...'})
 }
 
 const logout = async(req, res) => {
      res.cookie('token', null, {  httpOnly: true, expires: new Date(0) });
-     res.send({message:'Logout User'})
+     res.send({message: `You've been successfully logged out`})
 }
 
 

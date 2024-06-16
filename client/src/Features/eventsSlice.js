@@ -44,12 +44,12 @@ export const getAllGoals = createAsyncThunk('getAllGoals', async({page}, thunkAP
 })
 
 
-export const getAllCalendarEvents = createAsyncThunk('getAllCalendarEvents', async() => {
+export const getAllCalendarEvents = createAsyncThunk('getAllCalendarEvents', async(_, thunkAPI) => {
     try {
         const response = await axios.get(`/api/v1/goals/getAllCalendarItems`);
         return response.data
     } catch (error) {
-        
+        return thunkAPI.rejectWithValue('')
     }
 })
 
@@ -141,6 +141,10 @@ const eventsSlice = createSlice({
     builder.addCase(getAllCalendarEvents.fulfilled, (state, action) => {
         const {newCalendarEvents} = action.payload;
         state.calendarEvents = newCalendarEvents
+    })
+
+    builder.addCase(getAllCalendarEvents.rejected, (state, action) => {
+        state.calendarEvents = []
     })
 
   builder.addCase(editSubstep.fulfilled, (state, action) => {

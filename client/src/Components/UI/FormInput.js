@@ -2,11 +2,12 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { clearMessage } from '../../Features/userSlice';
 
-const FormInput = ({type, name, value, onChange}) => {
+const FormInput = ({id, type, name, value, onChange}) => {
   const dispatch = useDispatch();
 
   return (
     <input 
+     id={id}
      className={name}
      type={type}
      value={value}

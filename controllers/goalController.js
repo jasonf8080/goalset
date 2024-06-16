@@ -673,7 +673,7 @@ const deleteSubgoal = async(req, res) => {
     const substep = await SubStep.findByIdAndDelete({_id: substepID});
     
 
-    res.status(StatusCodes.OK).json({message: 'Substep has been deleted'})
+    res.status(StatusCodes.OK).json({substepID, message: 'Substep has been deleted'})
 
 
 }

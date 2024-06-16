@@ -55,7 +55,7 @@ const Substep = ({goal, setGoal, mainStepIndex, index, text, _id, completed, goa
     const [title, setTitle] = useState('');
     const [isCompleted, setIsCompleted] = useState(completed)
     const [newStart, setNewStart] = useState('');
-    const [newEnd, setNewEnd] = useState('')
+    const [newEnd, setNewEnd] = useState('');
     
     //Add Editing Input
     const beginEdit = (text) => {
@@ -134,7 +134,8 @@ const Substep = ({goal, setGoal, mainStepIndex, index, text, _id, completed, goa
         try {
             const response = await axios.delete(`/api/v1/goals/deleteSubgoal/${substepID}`)
             console.log(response.data)
-            removeStepFromDOM(substepID)
+           // const new
+            removeStepFromDOM(response.data.substepID)
             
         } catch (error) {
             console.log(error)
@@ -142,8 +143,17 @@ const Substep = ({goal, setGoal, mainStepIndex, index, text, _id, completed, goa
     }
 
     const removeStepFromDOM = (substepID) => {
-        const updatedSteps = newSubsteps.filter((item) => item._id !== substepID);
-        setNewSubsteps(updatedSteps)
+        console.log(substepID)
+        console.log(newSubsteps)
+      
+       //const updatedSteps = newSubsteps.filter((item) => item._id != substepID);
+
+        const test = newSubsteps.filter((item) => item._id !== substepID);
+        
+
+        console.log(test)
+        setNewSubsteps(test)
+       //setNewSubsteps(updatedSteps)
     }
 
 

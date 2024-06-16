@@ -24,83 +24,61 @@ const formatDate = (date) => {
 
 const PlansInfo = () => {
     const dispatch = useDispatch();
-   // const { allGoalsLoading, userGoals, userGoalsPercentages } = useSelector((store) => store.goal);
     const {goalsLoading, goals} = useSelector((store) => store.events);
 
-   // const fetchGoals = async() => {}
 
     useEffect(() => {
         dispatch(getAllGoals());
     }, [])
   
-
-    // const [goalInfo, setGoalInfo] = useState([])
-
-    // useEffect(() => {
-    //     setGoalInfo(userGoalsPercentages)
-    // })
-
-    // const updatePercentage = (substepGoalID) => {
-    //     const checkedSubstep = userGoalsPercentages.find((item) => item._id === substepGoalID)
-
-    //     checkedSubstep.substepsCompletedPercentage =
-    // }
-
-    // useEffect(() => {
-
-    // }, [])
-
-    //What needs to happen 
-    //Get the SubStep goalID,
-    //Calculate new completedPercentage 
-    //Send back the newGoal with newPercentage
-
-    //Find the newGoal with userGoalsPercentages
-    //Replace it with the old goal in userGoalsPercentages with newGoal
-    //Reupdate userGoalsPercentages
-
    
   return (
    <Wrapper>
         <div className="plans-info">
-            <div className="plans">
-
-            {goals.map((item, index) => {
-                const {goalTitle, _id, goalStartDate, goalEndDate, goalStyle, substepsCompletedPercentage} = item;
-        
-                return (
-                    <Link to={`/plan/${_id}`} key={_id}>
-                     <div className={`${goalsLoading && 'loading'} plan-card-outline`}>
-                        <div key={index} className='plan-card card-style'>
-                            <div className="plan-card-top">
-                                <span className='plan-color' style={{background: goalStyle.background}}></span>
-                                <h3>{goalTitle}</h3>
-                            </div>
-
+            {goals.length < 1 ? 
+            <div className="empty-plans">
+                <p>You currently don't have any active plans.</p>
+            </div>
+              :
+              <div className="plans">
+                {goals.map((item, index) => {
+                    const {goalTitle, _id, goalStartDate, goalEndDate, goalStyle, substepsCompletedPercentage} = item;
             
-
-                            <div className="plan-card-bottom" >
-                                <span className='target-icon'>🎯</span> 
-                                <p>{`${formatDate(goalStartDate)} - ${formatDate(goalEndDate)}`}</p>
-                            
-                            </div>
-                            
-                             <div>
-                                <div className='percentage-container'>
-                                    <div className='percentage' style={{width: `${substepsCompletedPercentage}%`}}></div>
+                    return (
+                        <Link to={`/plan/${_id}`} key={_id}>
+                        <div className={`${goalsLoading && 'loading'} plan-card-outline`}>
+                            <div key={index} className='plan-card card-style'>
+                                <div className="plan-card-top">
+                                    <span className='plan-color' style={{background: goalStyle.background}}></span>
+                                    <h3>{goalTitle}</h3>
                                 </div>
 
-                                <h5 className={`${goalsLoading && 'Loading'} ${substepsCompletedPercentage > 0 && 'active'}`}>
-                                    {substepsCompletedPercentage !== 100 ? `${Math.round(substepsCompletedPercentage)}% Complete` : 'All Steps Complete'}
-                                </h5>
-                            
-                             </div> 
-                        </div>
-                   </div>
-                </Link>
-                )
-            })} 
+                
+
+                                <div className="plan-card-bottom" >
+                                    <span className='target-icon'>🎯</span> 
+                                    <p>{`${formatDate(goalStartDate)} - ${formatDate(goalEndDate)}`}</p>
+                                
+                                </div>
+                                
+                                <div>
+                                    <div className='percentage-container'>
+                                        <div className='percentage' style={{width: `${substepsCompletedPercentage}%`}}></div>
+                                    </div>
+
+                                    <h5 className={`${goalsLoading && 'Loading'} ${substepsCompletedPercentage > 0 && 'active'}`}>
+                                        {substepsCompletedPercentage !== 100 ? `${Math.round(substepsCompletedPercentage)}% Complete` : 'All Steps Complete'}
+                                    </h5>
+                                
+                                </div> 
+                            </div>
+                    </div>
+                    </Link>
+                    )
+                })} 
             </div>
+              }
+            
 
             {/* <div className="pagination">
                 <button>Next Page</button>
@@ -124,6 +102,16 @@ const Wrapper = styled.div`
    a{
     text-decoration: none;
     color: black;
+   }
+
+   .empty-plans{
+   font-weight: bold;
+    min-height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #454545;
+    text-align: center;
    }
 
    .plans{
@@ -203,10 +191,6 @@ const Wrapper = styled.div`
         font-size: 16px;
         transform: translateY(2px);
     } */
-
-
-
-   
 
 
    .plan-card-top, .plan-card-middle, .plan-card-bottom{

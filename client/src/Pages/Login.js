@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { FormInput } from '../Components/UI'
 import {useDispatch, useSelector} from 'react-redux'
-import { registerUser, loginUser } from '../Features/userSlice'
+import { registerUser, loginUser, clearRedirect, clearMessage } from '../Features/userSlice'
 import Loader from '../Components/UI/Loader'
 import { Message } from '../Components/Login'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const dispatch = useDispatch();
-    const {loading, message} = useSelector((store) => store.user)
+
+    //Message being called from redux not from useContext
+    const {loading, message, redirectUser} = useSelector((store) => store.user)
    
     const [login, setLogin] = useState(true)
 
@@ -16,18 +19,40 @@ const Login = () => {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate();
 
-    const handleSubmit = async(e) => {
-      e.preventDefault();
+    
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-       if(login){
-        await dispatch(loginUser({email, password}))
-       } else {
-        await dispatch(registerUser({firstName, lastName, email, password}))
-       }
+    // Convert to lowercase
+    const lowerFirstName = firstName.toLowerCase();
+    const lowerLastName = lastName.toLowerCase();
+    const lowerEmail = email.toLowerCase();
+   // const lowerPassword = password.toLowerCase();
+
+    if (login) {
+      await dispatch(loginUser({ email: lowerEmail, password }));
+    } else {
+      await dispatch(registerUser({
+        firstName: lowerFirstName,
+        lastName: lowerLastName,
+        email: lowerEmail,
+        password
+      }));
     }
-    
-    
+  };
+
+  //When user logs in, handle redirect to the dashboard
+  useEffect(() => {
+    if(redirectUser){
+      setTimeout(() => {
+        navigate('/dashboard')
+        dispatch(clearMessage())
+    }, 3000)
+    }
+  }, [redirectUser])
+
 
   return (
      <Wrapper>
@@ -37,10 +62,10 @@ const Login = () => {
               <form>
                 <div className='logo'><img src='/images/logo.svg'/></div>
                 <h1>{login ? 'Login' : 'Sign Up'}</h1>
-               {!login && <FormInput type={'text'} name={'first name'} value={firstName} onChange={setFirstName}/>}
-               {!login && <FormInput type={'text'} name={'last name'} value={lastName} onChange={setLastName}/>}
-                <FormInput type={'email'} name={'email'} value={email} onChange={setEmail}/>
-                <FormInput type={'password'} name={'password'} value={password} onChange={setPassword}/>
+               {!login && <FormInput id={'login-name'} type={'text'} name={'first name'} value={firstName} onChange={setFirstName}/>}
+               {!login && <FormInput id={'login-lastname'} type={'text'} name={'last name'} value={lastName} onChange={setLastName}/>}
+                <FormInput id={'login-email'} type={'email'} name={'email'} value={email} onChange={setEmail}/>
+                <FormInput id={'login-password'} type={'password'} name={'password'} value={password} onChange={setPassword}/>
 
                 <button className='primary-btn' disabled={loading} onClick={handleSubmit}>
                   {loading ? <Loader classProp={'btn-loader'}/> : login ? 'Login' : 'Sign up'}
@@ -114,10 +139,18 @@ const Wrapper = styled.div`
 
     input::placeholder, input{
         font-family: 'Poppins';
-        text-transform: capitalize;
         font-size: 16px;
     }
 
+    input::placeholder, #login-lastname, #login-name{
+        text-transform: capitalize;
+    }
+
+    #login-email{
+      text-transform: lowercase;
+    }
+
+  
     input{
         outline: none;
         padding: 16px 24px;

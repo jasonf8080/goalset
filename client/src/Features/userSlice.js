@@ -7,13 +7,15 @@ const initialState = {
     type: '',
     content: ''
   },
-  user: {}
+  user: {},
+  redirectUser: false
 };
 
 export const registerUser = createAsyncThunk('registerUser', async({firstName, lastName, email, password}, thunkAPI) => {
   try {
     const response = await axios.post('/api/v1/users/register', {firstName, lastName, email, password})
     const data = response.data;
+
     return data
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.message)
@@ -49,11 +51,16 @@ const userSlice = createSlice({
     clearMessage: (state, action) => {
       state.message.type = ''
       state.message.content = ''
+      state.redirectUser = false
     }, 
 
     clearUser: (state, action) => {
       state.user = {}
-    }
+    },
+
+    // clearRedirect: (state, action) => {
+    //   state.redirectUser = false
+    // }
   }, 
 
   extraReducers: (builder) => {
@@ -65,6 +72,7 @@ const userSlice = createSlice({
       state.loading = false
       state.message.type = 'success'
       state.message.content = action.payload.message
+      state.redirectUser = true
     })
 
      builder.addCase(registerUser.rejected, (state, action) => {
@@ -82,7 +90,8 @@ const userSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false
       state.message.type = 'success'
-      state.message.content = action.payload.message
+      state.message.content = action.payload.message;
+      state.redirectUser = true
     })
 
      builder.addCase(loginUser.rejected, (state, action) => {
@@ -108,5 +117,5 @@ const userSlice = createSlice({
   }
 })
 
-export const {clearMessage, clearUser} = userSlice.actions
+export const {clearMessage, clearUser, clearRedirect} = userSlice.actions
 export default userSlice.reducer;

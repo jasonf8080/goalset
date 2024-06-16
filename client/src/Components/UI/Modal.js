@@ -10,6 +10,7 @@ import EditTime from '../EditTime'
 import { FaCheck } from 'react-icons/fa6'
 import { useDispatch } from 'react-redux'
 import { editSubstep } from '../../Features/eventsSlice'
+import { toggleComplete } from '../../Features/eventsSlice'
 
 
 const Modal = () => {
@@ -54,10 +55,17 @@ const Modal = () => {
         }
     }
 
+  const handleCheck = () => {
+    const newIsCompleted = !isCompleted
+   // setIsCompleted(!isCompleted)
+    dispatch(toggleComplete({substepID: modalID, completed: newIsCompleted}))
+    setIsCompleted(!isCompleted)
+  }
+
     const submitModal = async() => {
       //  const newIsCompleted = !isCompleted
        // setSubmitLoading(true)
-       dispatch(editSubstep({substepID: modalID, title, completed: isCompleted, startTime: newStartTime, endTime: newEndTime}))
+       dispatch(editSubstep({substepID: modalID, title, startTime: newStartTime, endTime: newEndTime}))
        handleModal()
            // updateMessage({type: 'success', content: response.data.message})
 
@@ -91,7 +99,7 @@ if(loading){
         <div className="modal">
             <div className='modal-top'>
                 <div className="flex">
-                     <h3><span>🎯</span>{activeSubstep.goalTitle}<Link to={`/plan/`} className='secondary-btn'>View Plan</Link></h3>
+                     <h3><span>🎯</span>{activeSubstep.goalTitle}</h3>
                      <span onClick={handleModal}><FaTimes/></span>
                 </div>
                
@@ -99,14 +107,15 @@ if(loading){
 
             <div className='modal-center'>
                 <div className='flex'> 
-                     <button className={`${isCompleted && 'active'} checkbox`} onClick={() => setIsCompleted(!isCompleted)}>
+                     <button className={`${isCompleted && 'active'} checkbox`} onClick={handleCheck}>
                             {isCompleted && <span><FaCheck/></span>}
                     </button>
 
                     <p>Step {activeSubstep.mainStepOrder}.{activeSubstep.order}: 
                         {!isEditing ? <span className='modal-title'>{title}</span> : <input id='modal-title-input' value={title} onChange={(e) => setTitle(e.target.value)}/>}
-                        <span className='pencil-icon' onClick={() => setIsEditing(!isEditing)}>✏️</span>
+                        
                     </p>
+                    <span className='pencil-icon' onClick={() => setIsEditing(!isEditing)}>✏️</span>
                 </div>
 
                 <div className='edit-times-container'>
@@ -116,8 +125,11 @@ if(loading){
             </div>
 
             <div className='modal-bottom'>
-                <button onClick={handleModal}>Close</button>
-                <button className='primary-btn' onClick={submitModal}>{submitLoading ? <Loader classProp={'btn-loader'}/> : 'Save'}</button>
+                <Link to={`/plan/${activeSubstep.goalID}`} className='secondary-btn'>View Plan</Link>
+                <div className="flex">
+                    <button onClick={handleModal}>Close</button>
+                    <button className='primary-btn' onClick={submitModal}>{submitLoading ? <Loader classProp={'btn-loader'}/> : 'Save'}</button>
+                </div>
             </div>
         </div>
     </Wrapper>
@@ -209,12 +221,15 @@ const Wrapper = styled.div`
    
 
     .secondary-btn{
-        margin-left: 8px;
+        /* margin-left: 8px; */
+        //font-size: smaller;
+        font-size: 14px;
     }
 
     .modal-bottom{
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .modal-bottom button{

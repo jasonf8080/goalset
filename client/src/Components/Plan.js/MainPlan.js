@@ -22,9 +22,18 @@ const MainPlan = ({goal, setGoal, title, mainStepIndex, mainStepID, substeps, or
 
     //Substeps 
     const [showSubsteps, setShowSubsteps] = useState(false)
-    const [newSubsteps, setNewSubsteps] = useState(substeps.filter((item) => item.mainStepID === mainStepID))
+    const [newSubsteps, setNewSubsteps] = useState([])
     // const newSubsteps = 
     const [allSubStepsCompleted, setAllSubStepsCompleted] = useState(null)
+
+    useEffect(() => {
+        const init = substeps.filter((item) => item.mainStepID === mainStepID);
+        setNewSubsteps(init)
+        console.log('This render')
+    }, [])
+
+
+    
 
     const beginEdit = (text) => {
      
@@ -91,7 +100,7 @@ const MainPlan = ({goal, setGoal, title, mainStepIndex, mainStepID, substeps, or
 
     useEffect(() => {
         checkCompletedStepsCount();
-    }, [])
+    }, [newSubsteps])
 
 
   return (

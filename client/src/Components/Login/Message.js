@@ -4,21 +4,22 @@ import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux';
 import { clearMessage } from '../../Features/userSlice';
-import { FaCheck } from 'react-icons/fa6';
+import { FaCheck, FaTimes } from 'react-icons/fa6';
+import { LiaTimesSolid } from "react-icons/lia";
 
-const Message = ({type, content}) => {
+const Message = ({redirect, type, content}) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch();
    
-    useEffect(() => {
-        if(type === 'success'){
-            setTimeout(() => {
-                  navigate('/dashboard')
-                 dispatch(clearMessage())
-            }, 3000)
-        }
-    }, [content])
+    // useEffect(() => {
+    //     if(redirect && type === 'success'){
+    //         setTimeout(() => {
+    //               navigate('/dashboard')
+    //               dispatch(clearMessage())
+    //         }, 3000)
+    //     }
+    // }, [content])
 
   return (
     <Wrapper>
@@ -28,7 +29,7 @@ const Message = ({type, content}) => {
              transition={{ duration: 0.2 }} // Transition configuration
              className={`${type} message-container`}>
             <p>{content}</p>
-             <span><FaCheck></FaCheck></span>
+             <span>{type === 'success' ? <FaCheck/> : <LiaTimesSolid/>}</span>
         </motion.div>
     </Wrapper>
   )

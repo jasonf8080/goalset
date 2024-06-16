@@ -226,6 +226,7 @@ const Wrapper = styled.div`
     .main-step.completed{
         background: var(--opaque-blue);
         color: var(--primary-color);
+        //border: 2px solid var(--primary-color);
     }
 
     .main-step-flex{
