@@ -142,7 +142,7 @@ Now generate a new JSON array in this exact format with 5 main steps and 5 subst
   return (
     <Wrapper>
         <div className="container">
-             <h1>Create A New Plan</h1> 
+             {/* <h1>Create A New Plan</h1>  */}
              {/* Step Progress Component */}
             <StepProgress showComponent={showComponent} firstProgress={firstProgress} secondProgress={secondProgress} />
 
@@ -242,56 +242,7 @@ const Wrapper = styled.div`
         font-size: 40px;
     }
 
-    .quick-plans-container{
-        margin-bottom: 48px;
-    }
-
-     .quick-plans-container .flex{
-        justify-content: space-between;
-    }
-
-    .quick-plans-container button{
-       border: none;
-       margin-left: 4px;
-    }
-
-    .quick-plans-grid{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-    }
-
-  .quick-plan-card-outline{
-    background: linear-gradient(to bottom, #fff, #fff);
-   // box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
-    padding: 4px;
-    border-radius: 16px;
-    margin-bottom: 16px;
-    background: transparent;
-   }
-
-   .quick-plan-card{
-    padding: 16px;
-    border-radius: 16px;
-    border-radius:4;
-    /* background: #fff; */
-    cursor: pointer;
-    transition: all 0.3s;
-   }
-
-   .quick-plan-card:hover{
-    transform: scale(1.05);
-   }
-
-   /* .quick-plan-card.active[
-
-   ] */
-
-   .quick-plan-card span{
-      margin-right: 8px;
-   }
-
-
+ 
     .form-top-flex{
         margin-top: 32px;
         display: flex;
@@ -304,7 +255,7 @@ const Wrapper = styled.div`
         font-size: 24px;
     }
 
-    .plan-name-container p{
+    .subtitle{
         font-size: 20px;
     }
 
@@ -330,18 +281,26 @@ const Wrapper = styled.div`
     }
     
     input,  .steps-toggle-btn, textarea{
-        background: white;
-        border: 1px solid #CFD4D9;
-        padding: 16px;
-        border-radius: 8px;
+        background: transparent !important;
+        border: none;
+        border-bottom: 2px solid #B8B5FF;
+        padding: 16px 0px;
+       // border-radius: 8px;
         outline: none;
         font-family: 'Poppins';
     }
+
 
     input{
         margin-top: 16px;
     }
 
+    input, input::placeholder, textarea, textarea::placeholder{
+         color: var(--primary-color) !important;
+         font-size: 18px;
+    }
+
+    
   
     .steps-toggle-btn{
         display: flex;
@@ -354,26 +313,7 @@ const Wrapper = styled.div`
         position: relative;
     }
 
-    .date-flex{
-        display: flex;
-        align-items: center;
-    }
-
-    .date-flex input{
-        flex-basis: 48% !important;
-    }
-
-    .date-flex input{
-        text-transform: uppercase;
-    }
-
-    .date-flex div{
-        height: 1px;
-        flex-basis: 4%;
-        background: black;
-        margin: 0px 16px;
-    }
-
+   
     /* .description-container{
         margin-top: 32px;
     } */
@@ -409,7 +349,7 @@ const Wrapper = styled.div`
     }
 
     .next-step-button{
-        margin-top: 48px;
+        margin-top: 24px;
         background: #aaa;
         color: white;
         border: none;
@@ -439,7 +379,7 @@ const Wrapper = styled.div`
     }
 
     .back-button{
-        margin-bottom: 16px;
+        margin-bottom: 32px;
        color: var(--primary-color);
         background: transparent;
         border: none;

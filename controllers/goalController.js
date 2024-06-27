@@ -216,24 +216,20 @@ const createGoal = async (req, res) => {
         console.log('FIRST GOAL')
         style =  {background: '#002EFC40', text: '#002EFC'}
     } else  {
-        console.log(mostRecentGoal)
+    
           const currentIndex = eventStyles.findIndex((item) => _.isEqual(item, mostRecentGoal.style));
 
         style = eventStyles[currentIndex + 1]
 
-       console.log(currentIndex)
-        
-
-       // console.log(nextStyle, 'next style')
-        //style = eventStyles[nextStyle]
+    
     }
 
     // Create the goal
     const goal = await Goal.create({
         title,
         userID: req.user.userID,
-        startDate,
-        endDate,
+        startDate: startDate ? startDate : null,
+        endDate: endDate ? endDate : null,
         style 
     });
 
@@ -271,7 +267,7 @@ const createGoal = async (req, res) => {
 
     // After all main steps and substeps are created, find the new substeps
     //const newSubsteps = await SubStep.find({ goalID: goal._id });
-
+if(startDate && endDate){
     const updateSubstepsWithTimes = async (sortedSubsteps, startDate, endDate) => {
   const newStartDate = new Date(startDate);
   const newEndDate = new Date(endDate);
@@ -354,6 +350,7 @@ const updateAndProcessSubsteps = async () => {
 
 // Call the function
 updateAndProcessSubsteps();
+}
 
     //console.log(sortedSubsteps.length, "sortedItems");
 
@@ -484,8 +481,8 @@ const getAllCalendarEvents = async(req, res) => {
 
         // moment('2024-05-06T02:00:00').toDate(), converts to proper date format
         return {
-            start: startTime,
-            end: endTime,
+            start: startTime ? startTime : null,
+            end: endTime ? endTime : null,
 
             data:{
                 id: _id,
@@ -499,7 +496,13 @@ const getAllCalendarEvents = async(req, res) => {
         }
     })
 
-    res.status(StatusCodes.OK).json({newCalendarEvents})
+   // const filteredCalendarEvents = newCalendarEvents.filter((item) => item.startTime && item.endTime !== null)
+    //const filteredCalendarEvents = newCalendarEvents.filter((item) => item.startTime && item.endTime !== null);
+   const filteredCalendarEvents = newCalendarEvents.filter((item) => item.start !== null);
+
+    console.log('filteredCalendarEvents', filteredCalendarEvents)
+
+    res.status(StatusCodes.OK).json({newCalendarEvents: filteredCalendarEvents})
 }
 
 //dispatch after checked on calendar

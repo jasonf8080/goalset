@@ -18,14 +18,16 @@ const CalendarEvents = () => {
     }, [dispatch]);
 
     const changeTime = (time) => {
-        const dateString = time.toString();
-        let newDate;
-        if (dateString.endsWith('Z')) {
-            newDate = dateString.slice(0, -1);
-        } else {
-            newDate = dateString;
+        if(time){
+            const dateString = time.toString();
+            let newDate;
+            if (dateString.endsWith('Z')) {
+                newDate = dateString.slice(0, -1);
+            } else {
+                newDate = dateString;
+            }
+            return new Date(newDate);
         }
-        return new Date(newDate);
     };
 
     const modifyEvents = () => {

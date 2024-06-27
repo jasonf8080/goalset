@@ -88,11 +88,11 @@ const formatDate = (date) => {
                 <div>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <h1>{<> <span className='goal-emoji'>🎯</span>{goal && goal.goal.title} </>}</h1>
-                        <span className='pencil-icon'>✏️</span>
+                        {/* <span className='pencil-icon'>✏️</span> */}
                         
                     </div>
 
-                    <p className='date'>{goal && formatDate(goal.goal.startDate)} - {goal && formatDate(goal.goal.endDate)}</p>
+                    {goal && goal.goal.startDate && goal.goal.endDate ? <p className='date'>{goal && formatDate(goal.goal.startDate)} - {goal && formatDate(goal.goal.endDate)}</p> : null}
 
                     <Percentage percentage={goal && goal.percentage}/>
 

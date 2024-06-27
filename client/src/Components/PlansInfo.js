@@ -12,6 +12,7 @@ import { getAllGoals } from '../Features/eventsSlice';
 
 
 const formatDate = (date) => {
+    if(date){
     const newDate = new Date(date)
     const year = newDate.getFullYear();
     const lastTwoDigits = year % 100;
@@ -19,6 +20,7 @@ const formatDate = (date) => {
     const day = newDate.getDate();
 
     return `${month}/${day}/${lastTwoDigits}`
+    }
 }
 
 
@@ -56,9 +58,7 @@ const PlansInfo = () => {
                 
 
                                 <div className="plan-card-bottom" >
-                                    <span className='target-icon'>🎯</span> 
-                                    <p>{`${formatDate(goalStartDate)} - ${formatDate(goalEndDate)}`}</p>
-                                
+                                    <p> <span className='target-icon'>🎯</span>  {`${goalStartDate && goalEndDate ? `${formatDate(goalStartDate)} - ${formatDate(goalEndDate)}` : 'Timeframes not active'}`}</p>
                                 </div>
                                 
                                 <div>

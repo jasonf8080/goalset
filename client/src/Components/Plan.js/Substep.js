@@ -228,7 +228,7 @@ const Substep = ({goal, setGoal, mainStepIndex, index, text, _id, completed, goa
                                 <span className='trash-icon' onClick={deleteSubstep}><IoTrash/></span>
                             
                         </div>
-                        <p>{formatDate(newStart)} - {formatDate(newEnd)}</p>
+                       {newStart && newEnd &&  <p>{formatDate(newStart)} - {formatDate(newEnd)}</p>}
                     </>
                      : 
 
@@ -245,10 +245,10 @@ const Substep = ({goal, setGoal, mainStepIndex, index, text, _id, completed, goa
                             </button>
                         </div>
                             
-                        <div className="edit-times-container">
+                       {newStart && newEnd && <div className="edit-times-container">
                             <EditTime dateType={'Start Date'} fullDate={newStart} setNewTime={setNewStart}/>
                             <EditTime dateType={'End Date'} fullDate={newEnd} setNewTime={setNewEnd}/>
-                        </div>
+                        </div>}
                       </>         
                     }
 
