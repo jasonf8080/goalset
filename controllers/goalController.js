@@ -209,7 +209,7 @@ const createGoal = async (req, res) => {
         throw new Error("NO DATA");
     }
 
-     const mostRecentGoal = await Goal.findOne({ userID: req.user.userID }).sort({ createdAt: -1 }).exec();
+    const mostRecentGoal = await Goal.findOne({ userID: req.user.userID }).sort({ createdAt: -1 }).exec();
      
     let style;
     if(!mostRecentGoal){
@@ -287,26 +287,6 @@ if(startDate && endDate){
 
     roundedStartTime = new Date(roundedStartTime)
     roundedEndTime = new Date(roundedEndTime)
-
-    
-    // Update the substep with the calculated start and end times
-
-    // const timeSlotUsed = await SubStep.findOne({startTime: roundedStartTime})
-    // if(timeSlotUsed){
-    //     // return roundedStartTime
-    //     console.log(roundedStartTime, 'og time')
-    //     roundedStartTime = roundedStartTime.setHours(roundedStartTime.getHours() + 1);
-    //      console.log(roundedStartTime, 'pushed an hour foward')
-         
-    //     roundedEndTime = roundedEndTime.setHours(roundedEndTime.getHours() + 1);
-
-    //     roundedStartTime = new Date(roundedStartTime)
-    //     roundedEndTime = new Date(roundedEndTime)
-    // } 
-
-
-
-    // console.log(timeSlotUsed, 'timeSlotTaken')
 
     return await SubStep.updateOne(
       { _id: item._id },

@@ -16,6 +16,7 @@ const UserInfo = () => {
     const {user} = useSelector((store) => store.user)
     const {message, updateMessage} = useContext(MainContext)
     const [showBeta, setShowBeta] = useState(false)
+    const [searchValue, setSearchValue] = useState('')
     
     const logout = async() => {
         const response = await axios.get('/api/v1/users/logout');
@@ -30,13 +31,14 @@ const UserInfo = () => {
         <div className="user-info"> 
             <div className="flex beta-flex">
                   <img src="/images/logo.svg" alt="Logo" />
-                  <p className="beta">Beta</p>
-                 <span onMouseEnter={() => setShowBeta(true)} onMouseLeave={() => setShowBeta(false)} className='beta-icon'><BsQuestionCircle/></span>
-                 {showBeta && 
+                  <p className="beta" onMouseEnter={() => setShowBeta(true)} onMouseLeave={() => setShowBeta(false)}>Beta</p>
+                  {showBeta && 
                     <div className="beta-message">
                         <p>Please be aware this is not a final version of the app. You may experience bugs and issues related to features.</p>
                     </div>
-                 }
+                  }
+
+                <Link to='/createPlan' className='primary-btn'><span><FaPlus/></span></Link>
            </div>
 
             <div>
@@ -44,7 +46,7 @@ const UserInfo = () => {
                 <span onClick={logout}><TbDoorExit/></span>
             </div>
 
-            <Link to='/createPlan' className='primary-btn'>New Plan  </Link>
+           
         </div>
     </Wrapper>
   )
@@ -87,10 +89,23 @@ const Wrapper = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 16px 0px;
-        min-width: 100%;
+        /* margin: 16px 0px; */
+        max-width: 30px;
+        max-height: 30px;
         padding: 16px;
         border-radius: 8px;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .primary-btn span{
+        margin-left: 0px !important;
+        transform: translateY(2px);
+    }
+
+    .beta-flex{
+        position: relative;
     }
 
     .beta{

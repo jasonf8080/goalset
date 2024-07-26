@@ -6,9 +6,7 @@ import { BsCalendar3Range } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MainContext from '../context';
-import { getAllGoals } from '../Features/eventsSlice';
-
-
+import { getAllGoals, filterEvents } from '../Features/eventsSlice';
 
 
 const formatDate = (date) => {
@@ -26,7 +24,13 @@ const formatDate = (date) => {
 
 const PlansInfo = () => {
     const dispatch = useDispatch();
-    const {goalsLoading, goals} = useSelector((store) => store.events);
+    const {goalsLoading, goals, filterEventsValue} = useSelector((store) => store.events);
+    // const [searchValue, setSearchValue] = useState('')
+
+    const handleChange = (e) => {
+       // console.log(e.target.value
+        dispatch(filterEvents(e.target.value))
+    }
 
 
     useEffect(() => {
@@ -36,7 +40,9 @@ const PlansInfo = () => {
    
   return (
    <Wrapper>
+       
         <div className="plans-info">
+             <input className='search-plans' type="text" placeholder={'Search Plans'} value={filterEventsValue} onChange={(e) => handleChange(e)} />
             {goals.length < 1 ? 
             <div className="empty-plans">
                 <p>You currently don't have any active plans.</p>
@@ -78,12 +84,6 @@ const PlansInfo = () => {
                 })} 
             </div>
               }
-            
-
-            {/* <div className="pagination">
-                <button>Next Page</button>
-                <button>Previous Page</button>
-            </div> */}
         </div>
    </Wrapper>
   )
@@ -97,6 +97,17 @@ const Wrapper = styled.div`
     position: relative;
     overflow: scroll;
     padding-top: 0px !important;
+   }
+
+   .search-plans{
+     max-width: 100%;
+     min-width: 100%;
+     padding: 12px 16px;
+     border-radius: 8px;
+     box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+     border: none;
+     margin-bottom: 16px;
+     outline: none;
    }
 
    a{

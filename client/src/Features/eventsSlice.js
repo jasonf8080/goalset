@@ -11,6 +11,7 @@ const initialState = {
 
     calendarEventsLoading: false,
     calendarEvents: [],
+    filterEventsValue: '',
     
 };
 
@@ -121,7 +122,28 @@ const eventsSlice = createSlice({
   name: 'eventsSlice',
   initialState,
   reducers:{
- 
+    filterEvents: (state, action) => {
+
+    // const {searchValue} = action.payload;
+   
+
+    const newSearchValue = action.payload.charAt(0).toUpperCase() + action.payload.slice(1)
+    console.log(newSearchValue)
+
+    if(newSearchValue){
+    const newGoals = state.goals.filter((item) => {
+        if(item.goalTitle.startsWith(newSearchValue)){
+            // console.log()
+            return item
+        }
+    })
+
+    state.goals = newGoals
+   
+    }
+
+     state.filterEventsValue = action.payload
+}
   }, 
 
   extraReducers: (builder) => {
@@ -213,39 +235,10 @@ const eventsSlice = createSlice({
     state.goals = newGoals;
 });
 
-    
-
-
-
-
-
-    
-
-
-
-
-    //  builder.addCase(updatePercentage.fulfilled, (state, action) => {
-       
-    //     const {percentage, goalID} = action.payload.newPercentage
-      
-    //    // state.goal = action.payload.goal
-
-    //    const newUserGoalsPercentages = JSON.parse(JSON.stringify(state.userGoalsPercentages)).map((item, index) => {
-    //             if(item._id === goalID){
-    //                return {...item, substepsCompletedPercentage: percentage}
-    //             }
-          
-    //             return item
-            
-    //    })
-
-    //    state.userGoalsPercentages = newUserGoalsPercentages
-    // })
-
 
 
   }
 })
 
-export const {} = eventsSlice.actions
+export const {filterEvents} = eventsSlice.actions
 export default eventsSlice.reducer;
